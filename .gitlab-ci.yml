@@ -1,8 +1,17 @@
 stages:
+- deploy
+
+
+default:
+  image: wufr/ubuntu-runner:latest
+
+stages:
   - deploy
 
-deploy:
+publichPackage:
   stage: deploy
   when: manual
   script:
-    - 'curl --header "Job-Token: $CI_JOB_TOKEN" --data tag=<tag> "https://gitlab.example.com/api/
+    - 'curl --header "Job-Token: $CI_JOB_TOKEN" --data tag=<tag> "https://gitlab.example.com/api/v4/projects/$CI_PROJECT_ID/packages/composer"'
+
+
