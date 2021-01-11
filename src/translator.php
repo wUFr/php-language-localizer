@@ -10,7 +10,7 @@ class translator {
 	public $values = [];
 
 	public function __construct(
-		private string $dir  = "/locales",
+		private string $dir  = "/locales/",
 		private string $lang = "en_US"){
 	}
 
@@ -20,7 +20,7 @@ class translator {
 		array  $params = []
 	) : string {
 
-		$langFile = $this->dir. "app/locales/" .$this->lang. "/" .$file. ".php";
+		$langFile = $this->dir . $this->lang. "/" .$file. ".php";
 
 		if(file_exists($langFile)){
 
