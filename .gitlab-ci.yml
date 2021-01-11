@@ -2,9 +2,6 @@ stages:
 - deploy
 
 
-default:
-  image: wufr/ubuntu-runner:latest
-
 stages:
   - deploy
 
