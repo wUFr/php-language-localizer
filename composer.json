@@ -1,0 +1,18 @@
+{
+    "name": "wufr/translator",
+    "description": "Translate keys into text values based on set language",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jiří Bělský",
+            "email": "packages@jiribelsky.cz"
+        }
+    ],
+	"config": {
+        "platform": {
+            "php": "^8.0"
+        }
+    },
+    "require": {}
+}
