@@ -15,5 +15,8 @@
             "php": "^8.0"
         }
     },
-    "require": {}
+    "require": {},
+	"autoload": {
+		"classmap": ["src/"]
+	}
 }
