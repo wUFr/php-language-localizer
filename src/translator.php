@@ -4,7 +4,7 @@
 
 namespace wUFr;
 
-class Localizer {
+class Translator {
 
 
 	public $values = [];

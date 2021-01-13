@@ -1,6 +1,7 @@
 {
     "name": "wufr/translator",
     "description": "Translate keys into text values based on set language",
+	"version": "1.0.3",
     "type": "library",
     "license": "MIT",
     "authors": [
