@@ -67,6 +67,7 @@ echo $l->locale(
 	"someFolder/testValues",
 	"translate_this"
 )
+
 // outputs "translated value"
 
 
