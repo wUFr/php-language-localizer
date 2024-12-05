@@ -10,11 +10,6 @@
             "email": "packages@jiribelsky.cz"
         }
     ],
-	"config": {
-        "platform": {
-            "php": "^8.0"
-        }
-    },
     "require": {},
 	"autoload": {
 		"classmap": ["src/"]
