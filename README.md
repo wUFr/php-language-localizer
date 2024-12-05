@@ -66,7 +66,8 @@ $l = new wUFr\Translator(dir: "./locales/", lang: "en_US");
 echo $l->locale(
 	"someFolder/testValues",
 	"translate_this"
-) // outputs "translated value"
+)
+// outputs "translated value"
 
 
 // STRING BASED ON "AMOUNT" OF SOMETHING
@@ -74,19 +75,22 @@ echo $l->locale(
 	"someFolder/testValues",
 	"BasedOnNumber",
 	["_counter" => 0]
-) // outputs "box"
+)
+// outputs "box"
 
 echo $l->locale(
 	"someFolder/testValues",
 	"BasedOnNumber",
 	["_counter" => 50]
-) // outputs "a lot of boxes"
+)
+// outputs "a lot of boxes"
 
 echo $l->locale(
 	"someFolder/testValues",
 	"BasedOnNumber",
 	["_counter" => 51]
-) // outputs "a lot of boxes" as well
+)
+// outputs "a lot of boxes" as well
 
 
 // STRING WITH REPLACABLE VALUES (IDEAL FOR USE IN TEMPLATING ENGINES, SO YOU DONT HAVE TO SPLIT TEXT INTO MULTIPLE KEY-STRINGS IN CONFIG)
@@ -97,11 +101,18 @@ echo $l->locale(
 		"username" => "John Doe",
 		"product"  => "AMD Epyc Server"
 	]
-) // outputs "Thank you John Doe for buying AMD Epyc Server"
+)
+// outputs "Thank you John Doe for buying AMD Epyc Server"
 
-// CAN BE COMBINED WITH COUNTER AS WELL
-// WARNING: "_counter" cant be used in replacable values, you always have to specify it again
-// its only used to decide which string should be returned, not for replacint
+/*
+	 CAN BE COMBINED WITH COUNTER AS WELL
+	
+	WARNING: "_counter" cant be used in replacable values, you always have to specify it again
+	
+	its only used to decide which string should be returned, not for replacint
+
+*/
+
 echo $l->locale(
 	"someFolder/testValues",
 	"thxTextCounter",
@@ -111,5 +122,6 @@ echo $l->locale(
 		"username" => "John Doe",
 		"product"  => "AMD Epyc Server"
 	]
-) // outputs: "Thank you John Doe for buying 50 pieces of AMD Epyc Server"
+)
+// outputs: "Thank you John Doe for buying 50 pieces of AMD Epyc Server"
 ```
