@@ -3,10 +3,12 @@ name: Test Release
 on:
   push:
     branches:
-      - master
+      - main
+      - release-candidate
   pull_request:
     branches:
-      - master
+      - main
+      - release-candidate
 
 jobs:
   build:
