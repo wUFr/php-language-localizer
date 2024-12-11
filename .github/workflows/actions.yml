@@ -45,18 +45,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        php-version: '8.0'
+        node-version: '14'
     - name: Install dependencies
-      run: composer install
-    - name: Configure Git
-      run: |
-        git config --global user.email "wUFr@users.noreply.github.com"
-        git config --global user.name "Jiří Bělský"
-    - name: Publish package
+      run: npm install
+    - name: Run semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
-      run: composer publish
+      run: npx semantic-release
