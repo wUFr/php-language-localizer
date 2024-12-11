@@ -1,0 +1,62 @@
+name: Test and Publish
+
+on:
+  push:
+    branches:
+      - master
+      - release-candidate
+  pull_request:
+    branches:
+      - master
+      - release-candidate
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0' # You can specify the PHP version you need
+
+    - name: Install Composer
+      run: |
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+        php -r "unlink('composer-setup.php');"
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Regenerate autoload files
+      run: composer dump-autoload
+
+    - name: Run tests
+      run: ./vendor/bin/phpunit --configuration phpunit.xml
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+    - name: Install dependencies
+      run: composer install
+    - name: Configure Git
+      run: |
+        git config --global user.email "wUFr@users.noreply.github.com"
+        git config --global user.name "Jiří Bělský"
+    - name: Publish package
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
+      run: composer publish
