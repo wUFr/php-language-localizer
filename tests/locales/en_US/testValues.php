@@ -1,3 +1,5 @@
+<?php
+
 $l = [
 	"helloWorld" => "hello world",
 	"BasedOnNumber" => [
