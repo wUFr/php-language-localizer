@@ -6,7 +6,7 @@ class TranslatorTest extends TestCase
 {
     public function testTranslation()
     {
-        $translator = new Translator(dir: "./locales/", lang: "en_US");
+        $translator = new Translator(dir: "./tests/locales/", lang: "en_US");
         $this->assertEquals('hello world', $translator->locale('testValues', 'helloWorld'));
     }
 
