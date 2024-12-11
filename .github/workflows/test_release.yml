@@ -32,5 +32,8 @@ jobs:
     - name: Install dependencies
       run: composer install
 
+    - name: Regenerate autoload files
+      run: composer dump-autoload
+
     - name: Run tests
       run: ./vendor/bin/phpunit --configuration phpunit.xml

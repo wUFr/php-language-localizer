@@ -1,5 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use wUFr\Translator;
 
 class TranslatorTest extends TestCase
 {
