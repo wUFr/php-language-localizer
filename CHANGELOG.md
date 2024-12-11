@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/wUFr/php-language-localizer/compare/v1.0.1...v1.1.0) (2024-12-11)
+
+
+### Features
+
+* **readme:** restructured ([0a3a54b](https://github.com/wUFr/php-language-localizer/commit/0a3a54b779fa6c38c249fe55ba6eeb413eac16ee))
+
 ## [1.0.1](https://github.com/wUFr/php-language-localizer/compare/v1.0.0...v1.0.1) (2024-12-11)
 
 
