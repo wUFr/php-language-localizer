@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/wUFr/php-language-localizer/compare/v1.2.1...v1.3.0) (2024-12-11)
+
+
+### Features
+
+* **actions:** update packagist on release ([4750e19](https://github.com/wUFr/php-language-localizer/commit/4750e192b6cfd4f6bc95d807ec6d2e4a205b30c5))
+
 ## [1.2.1](https://github.com/wUFr/php-language-localizer/compare/v1.2.0...v1.2.1) (2024-12-11)
 
 
