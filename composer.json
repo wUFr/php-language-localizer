@@ -1,5 +1,5 @@
 {
-	"name": "wufr/translator",
+	"name": "wufr/php-language-localizer",
 	"description": "Translate keys into text values based on set language",
 	"type": "library",
 	"license": "MIT",
