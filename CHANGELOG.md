@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/wUFr/php-language-localizer/compare/v1.2.0...v1.2.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* **readme:** package name fixed ([fbebd28](https://github.com/wUFr/php-language-localizer/commit/fbebd28739763635f20e193471662f057f234cd5))
+
 # [1.2.0](https://github.com/wUFr/php-language-localizer/compare/v1.1.0...v1.2.0) (2024-12-11)
 
 
