@@ -1,128 +1,135 @@
-# PHP Language translator / localizer
-
+# PHP Language Translator / Localizer
 
 Outputs translated text based on current language settings.  
 Text strings are stored in PHP files and these can be stored in subfolders for better maintaining.
 
+## Table of Contents
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Files Structure Example](#files-structure-example)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-**Files structure example:**
+
+## Installation
+
+To install the library, use Composer:
+
+```sh
+composer require wufr/translator
+```
+
+**Note:** This library requires PHP version 8.0 or higher.
+
+## Quick Start
+
+Here is a quick example to get you started:
+
+```php
+require_once "./vendor/autoload.php";
+
+use wUFr\Translator;
+
+$translator = new Translator(dir: "./locales/", lang: "en_US");
+echo $translator->locale("someFolder/testValues", "translateThis");
+// outputs "translated value"
+```
+
+## Files Structure Example
+
+**Example folder structure:**  
+You can specify custom location for the "locales" folder, if you need to.
 
 ```
 /locales/
-	en_US/
-		someFolder/
-			testValues.php
-			...
+    en_US/
+        someFolder/
+            testValues.php
+            ...
 
-	cs_CZ/
-		...
-	...
+    cs_CZ/
+        ...
+    ...
 /vendor/
-	... (composer packages)
+    ... (composer packages)
 ...
 composer.json
 index.php
 ```
 
-**en_us/someFolder/testValues.php:**
+**Example localization file:**  
+Path to this file and name of the file itself is used in the locale() method. This way you can structure your localization texts in a nice clean structure with folders for different parts of the website, like "eshop", "user-area", "admin-panel" etc.
+
+`en_us/someFolder/testValues.php:`
 ```php
 $l = [
-	"translateThis" => "translated value",
-	"BasedOnNumber" => [
-		1  => "box",
-		2  => "boxes",
-		50 => "a lot of boxes"
-	],
-	"thxText" => "Thank you {username} for buying {product}",
-	"thxTextCounter" => [
-		1 =>   "Thank you {username} for buying a piece of {product}",
-		2 =>   "Thank you {username} for buying two of {product}",
-		50 =>  "Thank you {username} for buying {count} pieces of {product}",
-	],
+    "translateThis" => "translated value",
+    "BasedOnNumber" => [
+        1  => "box",
+        2  => "boxes",
+        50 => "a lot of boxes"
+    ],
+    "thxText" => "Thank you {username} for buying {product}",
+    "thxTextCounter" => [
+        1 =>   "Thank you {username} for buying a piece of {product}",
+        2 =>   "Thank you {username} for buying two of {product}",
+        50 =>  "Thank you {username} for buying {count} pieces of {product}",
+    ],
 ];
 
 ```
 
 
 
-**index.php:**
+
+## Usage
+
+### Simple String
+
 ```php
-<?php
-
-require_once "./vendor/autoload.php";
-
-/*
-	DEFAULTS:
-	dir: /locales/ (always use "/" at the end)
-
-	lang: "en_US" - only specifies sub-folder,
-	you can use whatever you want, even "english",
-	if the sub folder is located in /locales/english/.
-*/
-
-$l = new wUFr\Translator(dir: "./locales/", lang: "en_US");
-
-// SIMPLE STRING
-echo $l->locale(
-	"someFolder/testValues",
-	"translate_this"
-)
-
+echo $translator->locale("someFolder/testValues", "translateThis");
 // outputs "translated value"
+```
 
+### String Based on "Amount" of Something
 
-// STRING BASED ON "AMOUNT" OF SOMETHING
-echo $l->locale(
-	"someFolder/testValues",
-	"BasedOnNumber",
-	["_counter" => 0]
-)
+```php
+echo $translator->locale("someFolder/testValues", "BasedOnNumber", ["_counter" => 1]);
 // outputs "box"
 
-echo $l->locale(
-	"someFolder/testValues",
-	"BasedOnNumber",
-	["_counter" => 50]
-)
+echo $translator->locale("someFolder/testValues", "BasedOnNumber", ["_counter" => 50]);
 // outputs "a lot of boxes"
+```
 
-echo $l->locale(
-	"someFolder/testValues",
-	"BasedOnNumber",
-	["_counter" => 51]
-)
-// outputs "a lot of boxes" as well
+### String with Replaceable Values
 
-
-// STRING WITH REPLACABLE VALUES (IDEAL FOR USE IN TEMPLATING ENGINES, SO YOU DONT HAVE TO SPLIT TEXT INTO MULTIPLE KEY-STRINGS IN CONFIG)
-echo $l->locale(
-	"someFolder/testValues",
-	"thxText",
-	[
-		"username" => "John Doe",
-		"product"  => "AMD Epyc Server"
-	]
-)
+```php
+echo $translator->locale("someFolder/testValues", "thxText", [
+    "username" => "John Doe",
+    "product"  => "AMD Epyc Server"
+]);
 // outputs "Thank you John Doe for buying AMD Epyc Server"
+```
 
-/*
-	 CAN BE COMBINED WITH COUNTER AS WELL
-	
-	WARNING: "_counter" cant be used in replacable values, you always have to specify it again
-	
-	its only used to decide which string should be returned, not for replacint
+### Combined with Counter
 
-*/
-
-echo $l->locale(
-	"someFolder/testValues",
-	"thxTextCounter",
-	[
-		"_counter" => 50,
-		"count"    => 50,
-		"username" => "John Doe",
-		"product"  => "AMD Epyc Server"
-	]
-)
+```php
+echo $translator->locale("someFolder/testValues", "thxTextCounter", [
+    "_counter" => 50,
+    "count"    => 50,
+    "username" => "John Doe",
+    "product"  => "AMD Epyc Server"
+]);
 // outputs: "Thank you John Doe for buying 50 pieces of AMD Epyc Server"
 ```
+
+**Important:** the `_counter` parameter is used only to decide which string is returned, not as a variable inside string. You need to add (in this case) `count` in the parameters.
+
+## Contributing
+
+To contribute, please create a new branch from the `release-candidate` branch and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
