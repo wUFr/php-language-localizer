@@ -17,7 +17,7 @@ Text strings are stored in PHP files and these can be stored in subfolders for b
 To install the library, use Composer:
 
 ```sh
-composer require wufr/translator
+composer require wufr/php-language-localizer
 ```
 
 **Note:** This library requires PHP version 8.0 or higher.
