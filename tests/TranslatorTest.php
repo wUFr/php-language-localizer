@@ -5,11 +5,11 @@ use wUFr\Translator;
 
 class TranslatorTest extends TestCase
 {
-    public function testHelloWorld()
-    {
-        $translator = new Translator(dir: "./tests/locales/", lang: "en_US");
-        $this->assertEquals('hello world', $translator->locale('testValues', 'helloWorld'));
-    }
+	public function testHelloWorld()
+	{
+		$translator = new Translator(dir: "./tests/locales/", lang: "en_US");
+		$this->assertEquals('hello world', $translator->locale('testValues', 'helloWorld'));
+	}
 
 	public function testBasedOnNumber()
 	{
