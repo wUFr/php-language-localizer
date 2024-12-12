@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/wUFr/php-language-localizer/compare/v1.5.0...v1.5.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* **tests:** using tabs for indentation ([5c2eb90](https://github.com/wUFr/php-language-localizer/commit/5c2eb900026afbfe0461485afae8a06852e474f4))
+
 # [1.5.0](https://github.com/wUFr/php-language-localizer/compare/v1.4.0...v1.5.0) (2024-12-11)
 
 
