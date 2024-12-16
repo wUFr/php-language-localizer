@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/wUFr/php-language-localizer/compare/v1.5.1...v1.5.2) (2024-12-16)
+
+
+### Bug Fixes
+
+* **readme:** incorrectly formated UL/LI list ([1440fa4](https://github.com/wUFr/php-language-localizer/commit/1440fa484b238dcdf5f9a1609373f5b74f50e5fa))
+
 ## [1.5.1](https://github.com/wUFr/php-language-localizer/compare/v1.5.0...v1.5.1) (2024-12-12)
 
 
