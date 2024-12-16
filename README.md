@@ -7,7 +7,7 @@ Text strings are stored in PHP files and these can be stored in subfolders for b
 - Translate keys into text values based on set language.
 - Support for string replacement with parameters.
 - Handle different translations based on a counter value.
--Easy to structure localization texts in a clean folder hierarchy.
+- Easy to structure localization texts in a clean folder hierarchy.
 
 ## Table of Contents
 - [Installation](#installation)
