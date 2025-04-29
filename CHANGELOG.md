@@ -1,3 +1,25 @@
+## [1.5.2](https://github.com/wUFr/php-language-localizer/compare/v1.5.1...v1.5.2) (2024-12-16)
+
+
+### Bug Fixes
+
+* **readme:** incorrectly formated UL/LI list ([1440fa4](https://github.com/wUFr/php-language-localizer/commit/1440fa484b238dcdf5f9a1609373f5b74f50e5fa))
+
+## [1.5.1](https://github.com/wUFr/php-language-localizer/compare/v1.5.0...v1.5.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* **tests:** using tabs for indentation ([5c2eb90](https://github.com/wUFr/php-language-localizer/commit/5c2eb900026afbfe0461485afae8a06852e474f4))
+
+# [1.5.0](https://github.com/wUFr/php-language-localizer/compare/v1.4.0...v1.5.0) (2024-12-11)
+
+
+### Features
+
+* **dependabot:** updated configuration ([ec643bc](https://github.com/wUFr/php-language-localizer/commit/ec643bc701246fcb562d2d7f60002fc2b92018f9))
+* **npm:** packages fixed ([7bce3f0](https://github.com/wUFr/php-language-localizer/commit/7bce3f0dd3c021d2a30078a2a7ecf4b5851678a7))
+
 # [1.4.0](https://github.com/wUFr/php-language-localizer/compare/v1.3.0...v1.4.0) (2024-12-11)
 
 
