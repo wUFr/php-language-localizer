@@ -7,6 +7,8 @@ Text strings are stored in PHP files and these can be stored in subfolders for b
 - Translate keys into text values based on set language.
 - Support for string replacement with parameters.
 - Handle different translations based on a counter value.
+- Gender-based translations for proper grammatical forms.
+- Combined gender and counter-based translations for complex language rules.
 - Easy to structure localization texts in a clean folder hierarchy.
 
 ## Table of Contents
@@ -82,6 +84,23 @@ $l = [
         2 =>   "Thank you {username} for buying two of {product}",
         50 =>  "Thank you {username} for buying {count} pieces of {product}",
     ],
+    "genderExample" => [
+        "male" => "He received a gift",
+        "female" => "She received a gift",
+        "neutral" => "They received a gift"
+    ],
+    "genderCounterExample" => [
+        "male" => [
+            1 => "He has one item",
+            2 => "He has two items",
+            5 => "He has many items"
+        ],
+        "female" => [
+            1 => "She has one item",
+            2 => "She has two items",
+            5 => "She has many items"
+        ]
+    ]
 ];
 
 ```
@@ -131,6 +150,57 @@ echo $translator->locale("someFolder/testValues", "thxTextCounter", [
 ```
 
 **Important:** the `_counter` parameter is used only to decide which string is returned, not as a variable inside string. You need to add (in this case) `count` in the parameters.
+
+### Gender-Based Strings
+
+You can translate strings based on gender by using the `_gender` parameter:
+
+```php
+echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "male"]);
+// outputs: "He received a gift"
+
+echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "female"]);
+// outputs: "She received a gift"
+
+echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "neutral"]);
+// outputs: "They received a gift"
+```
+
+### Gender-Based with Parameters
+
+You can combine gender-based translations with replaceable parameters:
+
+```php
+echo $translator->locale("someFolder/testValues", "welcome", [
+    "_gender" => "male",
+    "name"    => "John"
+]);
+// outputs: "Welcome Mr. John"
+
+echo $translator->locale("someFolder/testValues", "welcome", [
+    "_gender" => "female",
+    "name"    => "Jane"
+]);
+// outputs: "Welcome Mrs. Jane"
+```
+
+### Combined Gender and Counter
+
+For complex translations that need both gender and quantity information:
+
+```php
+echo $translator->locale("someFolder/testValues", "genderCounterExample", [
+    "_gender"  => "male",
+    "_counter" => 1
+]);
+// outputs: "He has one item"
+
+echo $translator->locale("someFolder/testValues", "genderCounterExample", [
+    "_gender"  => "female",
+    "_counter" => 5
+]);
+// outputs: "She has many items"
+```
 
 ## Contributing
 

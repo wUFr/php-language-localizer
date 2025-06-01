@@ -1,3 +1,11 @@
+## [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-01)
+
+
+### Features
+
+* **translator:** added gender-based translation support ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **translator:** implemented combined gender and counter-based translations ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
 ## [1.5.2](https://github.com/wUFr/php-language-localizer/compare/v1.5.1...v1.5.2) (2024-12-16)
 
 

@@ -30,21 +30,52 @@ class Translator {
 
 
 			if(array_key_exists($key, $this->values[$langFile])){
-				// OUTPUT VALUE BASED ON COUNTER (1 = "FIRST", 2 = "SECOND", ...)
+				// OUTPUT VALUE BASED ON COUNTER (1 = "FIRST", 2 = "SECOND", ...) OR GENDER
 				if(is_array($this->values[$langFile][$key])){
-					if(isset($params["_counter"])){
+					// Check for gender-based translation
+					if(isset($params["_gender"])) {
+						$gender = $params["_gender"];
+						
+						// Check if gender key exists
+						if(isset($this->values[$langFile][$key][$gender])) {
+							$value = $this->values[$langFile][$key][$gender];
+							
+							// If gender value is an array (for combined gender+counter cases)
+							if(is_array($value) && isset($params["_counter"])) {
+								$counter = $params["_counter"];
+								
+								$textOptions = [];
+								foreach($value as $num => $text) {
+									if($num <= $counter) {
+										$textOptions[] = $text;
+									}
+								}
+								$text = end($textOptions);
+							} else {
+								$text = $value;
+							}
+							
+							// Unset gender parameter as we've processed it
+							unset($params["_gender"]);
+						} else {
+							$text = '<b style="color:red">lang gender NOT found: ' .$gender. '</b>';
+						}
+					}
+					// Handle counter-based translations (existing functionality)
+					elseif(isset($params["_counter"])){
 						$counter = $params["_counter"];
 						$values  = $this->values[$langFile][$key];
-
+						
+						$text = [];
 						foreach($values as $num => $value){
-							if($num<=$counter){
+							if($num <= $counter){
 								$text[] = $value;
 							}
 						}
 						$text = end($text);
 					}
 					else {
-						$text = '<b style="color:red">lang counter NOT set</b>';
+						$text = '<b style="color:red">lang counter or gender NOT set</b>';
 					}
 				}
 				else {
