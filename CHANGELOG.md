@@ -1,3 +1,12 @@
+## [1.7.1](https://github.com/wUFr/php-language-localizer/compare/v1.7.0...v1.7.1) (2025-06-02)
+
+
+### Code Quality
+
+* **formatting:** improved code formatting with consistent spacing in match expressions ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **style:** standardized indentation using tabs throughout the codebase ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **readability:** removed unnecessary whitespace for better code consistency ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
 ## [1.7.0](https://github.com/wUFr/php-language-localizer/compare/v1.6.0...v1.7.0) (2025-06-01)
 
 

@@ -48,7 +48,7 @@ class TranslatorTest extends TestCase
 		$translator = new Translator(dir: self::TEST_DIR, lang: self::TEST_LANG);
 		$this->assertEquals('Thank you John for buying a piece of apple', $translator->locale('testValues', 'thxTextCounter', ['username' => 'John', 'product' => 'apple', '_counter' => 1]));
 		$this->assertEquals('Thank you John for buying two of apple', $translator->locale('testValues', 'thxTextCounter', ['username' => 'John', 'product' => 'apple', '_counter' => 2]));
-		$this->assertEquals('Thank you John for buying 50 pieces of apple', $translator->locale('testValues', 'thxTextCounter', ['username' => 'John', 'product' => 'apple', 'count' => 50 , '_counter' => 50]));
+		$this->assertEquals('Thank you John for buying 50 pieces of apple', $translator->locale('testValues', 'thxTextCounter', ['username' => 'John', 'product' => 'apple', 'count' => 50, '_counter' => 50]));
 	}
 
 	/**
