@@ -9,8 +9,8 @@ $l = [
 	],
 	"thxText" => "Thank you {username} for buying {product}",
 	"thxTextCounter" => [
-		1 =>   "Thank you {username} for buying a piece of {product}",
-		2 =>   "Thank you {username} for buying two of {product}",
-		50 =>  "Thank you {username} for buying {count} pieces of {product}",
+		1 => "Thank you {username} for buying a piece of {product}",
+		2 => "Thank you {username} for buying two of {product}",
+		50 => "Thank you {username} for buying {count} pieces of {product}",
 	],
 ];

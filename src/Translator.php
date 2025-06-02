@@ -3,80 +3,186 @@
 namespace wUFr;
 
 class Translator {
+	/** @var array<string,array<string,mixed>> */
+	public array $values;
 
-
-	public $values = [];
+	private string $dir;
+	private string $lang;
 
 	public function __construct(
-		private string $dir  = "/locales/",
-		private string $lang = "en_US"){
+		string $dir  = "/locales/",
+		string $lang = "en_US") {
+		$this->values = [];
+		$this->dir = $dir;
+		$this->lang = $lang;
 	}
 
+	/**
+	 * Set the directory path for localization files
+	 *
+	 * @param string $dir The directory path
+	 * @return self For method chaining
+	 */
+	public function setDirectory(string $dir): self {
+		$this->dir = $dir;
+		return $this;
+	}
+
+	/**
+	 * Set the language for translations
+	 *
+	 * @param string $lang The language code (e.g., "en_US")
+	 * @return self For method chaining
+	 */
+	public function setLanguage(string $lang): self {
+		$this->lang = $lang;
+		return $this;
+	}
+
+	/**
+	 * Get the current language
+	 *
+	 * @return string The current language code
+	 */
+	public function getLanguage(): string {
+		return $this->lang;
+	}
+
+	/**
+	 * Get the current directory path
+	 *
+	 * @return string The current directory path
+	 */
+	public function getDirectory(): string {
+		return $this->dir;
+	}
+
+	/**
+	 * Get a localized string based on the provided key and parameters
+	 *
+	 * @param string $file The locale file to load
+	 * @param string $key The translation key to retrieve
+	 * @param array<string,mixed> $params Parameters for string replacement and pluralization
+	 * @return string The localized string
+	 */
 	public function locale(
 		string $file,
 		string $key,
-		array  $params = []
-	) : string {
+		array $params = []
+	): string {
+		$langFile = $this->dir . $this->lang . "/" . $file . ".php";
 
-		$langFile = $this->dir . $this->lang. "/" .$file. ".php";
+		if (!file_exists($langFile)) {
+			return '<b style="color:red">lang file NOT found: ' . $file . '</b>';
+		}
 
-		if(file_exists($langFile)){
+		// Load translation file if not already loaded
+		if (!isset($this->values[$langFile])) {
+			include($langFile);
+			$this->values[$langFile] = $l ?? [];
+		}
 
-			// SET VALUES IF THEY ARE NOT SET YET
-			if(!isset($this->values[$langFile])){
-				include($langFile);
-				$this->values[$langFile] = $l;
-			}
+		if (!array_key_exists($key, $this->values[$langFile])) {
+			return '<b style="color:red">lang key NOT found: ' . $file . '-' . $key . '</b>';
+		}
 
+		$value = $this->values[$langFile][$key];
 
-			if(array_key_exists($key, $this->values[$langFile])){
-				// OUTPUT VALUE BASED ON COUNTER (1 = "FIRST", 2 = "SECOND", ...)
-				if(is_array($this->values[$langFile][$key])){
-					if(isset($params["_counter"])){
-						$counter = $params["_counter"];
-						$values  = $this->values[$langFile][$key];
+		// Process array-based translations (counter or gender)
+		if (is_array($value)) {
+			$text = $this->processArrayTranslation($value, $params);
+		} else {
+			$text = $value;
+		}
 
-						foreach($values as $num => $value){
-							if($num<=$counter){
-								$text[] = $value;
-							}
-						}
-						$text = end($text);
-					}
-					else {
-						$text = '<b style="color:red">lang counter NOT set</b>';
-					}
-				}
-				else {
-					$text = $this->values[$langFile][$key];
-				}
+		// Replace parameters in the string
+		return $this->replaceParameters($text, $params);
+	}
 
+	/**
+	 * Process array-based translations for counter or gender
+	 *
+	 * @param array<string|int,mixed> $value The translation array
+	 * @param array<string,mixed> &$params Parameters for the translation
+	 * @return string The processed translation
+	 */
+	private function processArrayTranslation(array $value, array &$params): string {
+		return match (true) {
+			isset($params['_gender']) => $this->processGenderTranslation($value, $params),
+			isset($params['_counter']) => $this->processCounterTranslation($value, $params),
+			default => '<b style="color:red">lang counter or gender NOT set</b>'
+		};
+	}
 
-				// UNSET COUNTER, WE DONT NEED IT ANYMORE AND
-				// IT WILL SAVE PERFORMANCE, IF WE DON'T HAVE ANY VALUES TO SEARCH AND REPLACE
-				unset($params["_counter"]);
+	/**
+	 * Process gender-based translations
+	 *
+	 * @param array<string,mixed> $value The translation array
+	 * @param array<string,mixed> &$params Parameters for the translation
+	 * @return string The processed translation
+	 */
+	private function processGenderTranslation(array $value, array &$params): string {
+		$gender = $params['_gender'];
 
-				// CHECK FOR PARAMS TO BE REPLACED, IF THERE ARE ANY
-				if(count($params)){
-					$langText = $text;
+		// Check if gender key exists
+		if (!isset($value[$gender])) {
+			return '<b style="color:red">lang gender NOT found: ' . $gender . '</b>';
+		}
 
-					foreach($params as $replaceKey => $replaceValue){
-						$replaceKey = "{".$replaceKey."}";
-						$langText    = str_replace($replaceKey, $replaceValue, $langText);
-					}
+		$genderValue = $value[$gender];
 
-					$text = $langText;
-				}
-			}
-			else {
-				$text = '<b style="color:red">lang key NOT found: ' .$file. '-' .$key. '</b>';
+		// If gender value is an array (for combined gender+counter cases)
+		if (is_array($genderValue) && isset($params['_counter'])) {
+			$result = $this->processCounterTranslation($genderValue, $params);
+		} else {
+			$result = $genderValue;
+		}
+
+		// Unset gender parameter as we've processed it
+		unset($params['_gender']);
+
+		return $result;
+	}
+
+	/**
+	 * Process counter-based translations
+	 *
+	 * @param array<int,string> $value The translation array
+	 * @param array<string,mixed> &$params Parameters for the translation
+	 * @return string The processed translation
+	 */
+	private function processCounterTranslation(array $value, array &$params): string {
+		$counter = $params['_counter'];
+
+		$options = [];
+		foreach ($value as $num => $text) {
+			if ($num <= $counter) {
+				$options[] = $text;
 			}
 		}
-		else {
-			$text = '<b style="color:red">lang file NOT found: ' .$file. '</b>';
+
+		// Unset counter parameter as we've processed it
+		unset($params['_counter']);
+
+		return end($options) ?: '';
+	}
+
+	/**
+	 * Replace parameters in the translated string
+	 *
+	 * @param string $text The text to process
+	 * @param array<string,mixed> $params Parameters to replace
+	 * @return string The text with replaced parameters
+	 */
+	private function replaceParameters(string $text, array $params): string {
+		if (empty($params)) {
+			return $text;
+		}
+
+		foreach ($params as $key => $value) {
+			$text = str_replace("{{$key}}", (string)$value, $text);
 		}
 
 		return $text;
 	}
-
 }

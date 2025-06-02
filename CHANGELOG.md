@@ -1,3 +1,31 @@
+## [1.7.1](https://github.com/wUFr/php-language-localizer/compare/v1.7.0...v1.7.1) (2025-06-02)
+
+
+### Code Quality
+
+* **formatting:** improved code formatting with consistent spacing in match expressions ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **style:** standardized indentation using tabs throughout the codebase ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **readability:** removed unnecessary whitespace for better code consistency ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
+## [1.7.0](https://github.com/wUFr/php-language-localizer/compare/v1.6.0...v1.7.0) (2025-06-01)
+
+
+### Features
+
+* **modernization:** implemented PHP 8.x features ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **enums:** added Gender enum for type-safe gender-based translations ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **entities:** added Entity gender option for objects, animals, and babies ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **refactor:** improved code structure with match expressions and readonly properties ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **organization:** consolidated gender test files for better maintainability ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
+## [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-01)
+
+
+### Features
+
+* **translator:** added gender-based translation support ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **translator:** implemented combined gender and counter-based translations ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
 ## [1.5.2](https://github.com/wUFr/php-language-localizer/compare/v1.5.1...v1.5.2) (2024-12-16)
 
 
