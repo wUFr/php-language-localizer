@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-02)
+
+
+### Bug Fixes
+
+* **tests:** remove redundant bootstrap tag from phpunit.xml ([b2ba3ad](https://github.com/wUFr/php-language-localizer/commit/b2ba3addb90ea069d4b5bfab2893759cf09a41b9))
+* **translator:** change values property from readonly to mutable ([f1ef889](https://github.com/wUFr/php-language-localizer/commit/f1ef889927bcd4b575c160d60fc1d5e2a4195df6))
+
+
+### Features
+
+* **translator:** add gender-based and combined gender-counter translation support ([98bd8e3](https://github.com/wUFr/php-language-localizer/commit/98bd8e3a0e50d485da036577af7ae189c90692c8))
+* **translator:** enhance gender-based translation support with Entity type and PHP 8.x features ([25f0eb3](https://github.com/wUFr/php-language-localizer/commit/25f0eb35d45e326657a259dbab4d226323c81a8b))
+
 ## [1.7.1](https://github.com/wUFr/php-language-localizer/compare/v1.7.0...v1.7.1) (2025-06-02)
 
 
