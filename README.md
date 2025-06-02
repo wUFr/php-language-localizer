@@ -1,245 +1,330 @@
-# PHP Language Translator / Localizer
+# PHP Language Localizer
 
-Outputs translated text based on current language settings.  
-Text strings are stored in PHP files and these can be stored in subfolders for better maintaining.
+A powerful, flexible PHP library for translating and localizing applications with support for gender-based translations, pluralization, and parameter replacement.
 
-**Features:**
-- Translate keys into text values based on set language.
-- Support for string replacement with parameters.
-- Handle different translations based on a counter value.
-- Gender-based translations for proper grammatical forms.
-- Combined gender and counter-based translations for complex language rules.
-- Type-safe implementation with PHP 8.x features.
-- Easy to structure localization texts in a clean folder hierarchy.
+_Just a weekend project so far, also to experiment with Github Copilot to rewrite and extend this library._
 
-## Table of Contents
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Files Structure Example](#files-structure-example)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/wufr/php-language-localizer.svg)](https://packagist.org/packages/wufr/php-language-localizer)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.0-8892BF)](https://php.net)
+[![License](https://img.shields.io/github/license/wUFr/php-language-localizer)](LICENSE.md)
 
+## Overview
+
+PHP Language Localizer provides a simple yet comprehensive solution for implementing multi-language support in your PHP applications. The library allows you to structure translations in a clean, maintainable folder hierarchy while providing advanced features like gender-based translations, pluralization, and parameter replacement.
+
+## Features
+
+- **Simple Key-Based Translation**: Convert translation keys to localized strings
+- **Flexible Folder Structure**: Organize translations in a logical folder hierarchy
+- **Parameter Replacement**: Insert dynamic values into translated strings
+- **Pluralization Support**: Handle different translations based on quantity
+- **Gender-Based Translation**: Support for male, female, neutral, and entity (object/animal) forms
+- **Combined Rules**: Mix gender and quantity rules for complex language scenarios
+- **Type Safety**: Built with PHP 8.x features including enums and match expressions
+- **Modern Implementation**: Utilizes readonly properties and proper type hints
 
 ## Installation
 
-To install the library, use Composer:
+Install the library using Composer:
 
-```sh
+```bash
 composer require wufr/php-language-localizer
 ```
 
-**Note:** This library requires PHP version 8.0 or higher.
+**Requirements:**
+- PHP 8.0 or higher
 
-## Quick Start
+## Basic Usage
 
-Here is a quick example to get you started:
+### Initialization
 
 ```php
-require_once "./vendor/autoload.php";
-
+// Import the Translator class
 use wUFr\Translator;
 
-$translator = new Translator(dir: "./locales/", lang: "en_US");
-echo $translator->locale("someFolder/testValues", "translateThis");
-// outputs "translated value"
+// Create a new translator instance
+$translator = new Translator(
+    dir: "./locales/",  // Directory containing translation files
+    lang: "en_US"       // Language code
+);
+
+// You can also set/change these values after initialization
+$translator->setDirectory("./custom/locales/");
+$translator->setLanguage("fr_FR");
 ```
 
-## Files Structure Example
+### Simple String Translation
 
-**Example folder structure:**  
-You can specify custom location for the "locales" folder, if you need to.
+```php
+// Translate a simple string
+echo $translator->locale("common/general", "welcome");
+// Output: "Welcome to our application"
+```
+
+## Organization
+
+### Folder Structure
 
 ```
-/locales/
-    en_US/
-        someFolder/
-            testValues.php
-            ...
-
-    cs_CZ/
+/locales/               # Base directory for all translations
+    /en_US/             # English (US) translations
+        /common/        # Common translations
+            general.php # General terms
+            errors.php  # Error messages
+        /admin/         # Admin panel translations
+            dashboard.php
+            users.php
+    /fr_FR/             # French translations
+        /common/
+            general.php
+            errors.php
         ...
-    ...
-/vendor/
-    ... (composer packages)
-...
-composer.json
-index.php
 ```
 
-**Example localization file:**  
-Path to this file and name of the file itself is used in the locale() method. This way you can structure your localization texts in a nice clean structure with folders for different parts of the website, like "eshop", "user-area", "admin-panel" etc.
+### Translation File Format
 
-`en_us/someFolder/testValues.php:`
+Each translation file should return an array using the `$l` variable:
+
 ```php
+<?php
+// locales/en_US/common/general.php
+
 $l = [
-    "translateThis" => "translated value",
-    "BasedOnNumber" => [
-        1  => "box",
-        2  => "boxes",
-        50 => "a lot of boxes"
-    ],
-    "thxText" => "Thank you {username} for buying {product}",
-    "thxTextCounter" => [
-        1 =>   "Thank you {username} for buying a piece of {product}",
-        2 =>   "Thank you {username} for buying two of {product}",
-        50 =>  "Thank you {username} for buying {count} pieces of {product}",
-    ],
-    "genderExample" => [
-        "male" => "He received a gift",
-        "female" => "She received a gift",
-        "neutral" => "They received a gift"
-    ],
-    "genderCounterExample" => [
-        "male" => [
-            1 => "He has one item",
-            2 => "He has two items",
-            5 => "He has many items"
-        ],
-        "female" => [
-            1 => "She has one item",
-            2 => "She has two items",
-            5 => "She has many items"
-        ]
-    ]
+    "welcome" => "Welcome to our application",
+    "greeting" => "Hello, {name}!",
+    "logout" => "Log out",
+    // More translations...
 ];
-
 ```
 
+## Advanced Features
 
+### Parameter Replacement
 
-
-## Usage
-
-### Simple String
-
-```php
-echo $translator->locale("someFolder/testValues", "translateThis");
-// outputs "translated value"
-```
-
-### String Based on "Amount" of Something
+Insert dynamic values into translations:
 
 ```php
-echo $translator->locale("someFolder/testValues", "BasedOnNumber", ["_counter" => 1]);
-// outputs "box"
-
-echo $translator->locale("someFolder/testValues", "BasedOnNumber", ["_counter" => 50]);
-// outputs "a lot of boxes"
-```
-
-### String with Replaceable Values
-
-```php
-echo $translator->locale("someFolder/testValues", "thxText", [
-    "username" => "John Doe",
-    "product"  => "AMD Epyc Server"
+echo $translator->locale("users/profile", "greeting", [
+    "username" => "John",
+    "lastLogin" => "yesterday"
 ]);
-// outputs "Thank you John Doe for buying AMD Epyc Server"
+// Output: "Hello John, you last logged in yesterday"
 ```
 
-### Combined with Counter
+### Pluralization with Counters
+
+Handle different forms based on quantity:
 
 ```php
-echo $translator->locale("someFolder/testValues", "thxTextCounter", [
-    "_counter" => 50,
-    "count"    => 50,
-    "username" => "John Doe",
-    "product"  => "AMD Epyc Server"
-]);
-// outputs: "Thank you John Doe for buying 50 pieces of AMD Epyc Server"
+// Translation file:
+// "itemCount" => [
+//     1 => "You have one item",
+//     2 => "You have two items",
+//     5 => "You have several items",
+//     10 => "You have many items"
+// ]
+
+// Code:
+echo $translator->locale("shop/cart", "itemCount", ["_counter" => 1]);
+// Output: "You have one item"
+
+echo $translator->locale("shop/cart", "itemCount", ["_counter" => 3]);
+// Output: "You have several items" (uses the 2 key as it's the highest that's <= 3)
+
+echo $translator->locale("shop/cart", "itemCount", ["_counter" => 12]);
+// Output: "You have many items"
 ```
 
-**Important:** the `_counter` parameter is used only to decide which string is returned, not as a variable inside string. You need to add (in this case) `count` in the parameters.
+When using the `_counter` parameter, the library selects the appropriate translation by finding the highest key that is less than or equal to the counter value.
 
-### Gender-Based Strings
+### Gender-Based Translations
 
-You can translate strings based on gender by using the `_gender` parameter:
-
-```php
-echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "male"]);
-// outputs: "He received a gift"
-
-echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "female"]);
-// outputs: "She received a gift"
-
-echo $translator->locale("someFolder/testValues", "genderExample", ["_gender" => "neutral"]);
-// outputs: "They received a gift"
-```
-
-### Gender-Based with Parameters
-
-You can combine gender-based translations with replaceable parameters:
+Handle gender-specific language forms:
 
 ```php
-echo $translator->locale("someFolder/testValues", "welcome", [
+// Translation file:
+// "welcome" => [
+//     "male" => "Welcome Mr. {name}",
+//     "female" => "Welcome Mrs. {name}",
+//     "neutral" => "Welcome {name}",
+//     "entity" => "Product: {name}"
+// ]
+
+// Code:
+echo $translator->locale("users/welcome", "welcome", [
     "_gender" => "male",
-    "name"    => "John"
+    "name" => "John"
 ]);
-// outputs: "Welcome Mr. John"
+// Output: "Welcome Mr. John"
 
-echo $translator->locale("someFolder/testValues", "welcome", [
+echo $translator->locale("users/welcome", "welcome", [
     "_gender" => "female",
-    "name"    => "Jane"
+    "name" => "Jane"
 ]);
-// outputs: "Welcome Mrs. Jane"
+// Output: "Welcome Mrs. Jane"
 ```
 
-### Combined Gender and Counter
+### Combined Gender and Counter Translations
 
-For complex translations that need both gender and quantity information:
+For complex language rules that need both gender and quantity:
 
 ```php
-echo $translator->locale("someFolder/testValues", "genderCounterExample", [
-    "_gender"  => "male",
+// Translation file:
+// "items" => [
+//     "male" => [
+//         1 => "He has one item",
+//         2 => "He has two items",
+//         5 => "He has many items"
+//     ],
+//     "female" => [
+//         1 => "She has one item",
+//         2 => "She has two items",
+//         5 => "She has many items"
+//     ],
+//     "neutral" => [
+//         1 => "They have one item",
+//         2 => "They have two items",
+//         5 => "They have many items"
+//     ],
+//     "entity" => [
+//         1 => "It contains one component",
+//         2 => "It contains two components",
+//         5 => "It contains many components"
+//     ]
+// ]
+
+// Code:
+echo $translator->locale("users/inventory", "items", [
+    "_gender" => "female",
     "_counter" => 1
 ]);
-// outputs: "He has one item"
+// Output: "She has one item"
 
-echo $translator->locale("someFolder/testValues", "genderCounterExample", [
-    "_gender"  => "female",
-    "_counter" => 5
+echo $translator->locale("users/inventory", "items", [
+    "_gender" => "entity", 
+    "_counter" => 3
 ]);
-// outputs: "She has many items"
+// Output: "It contains two components"
 ```
+
+### Using with Parameters and Counters
+
+Combine counters with parameter replacement:
 
 ```php
-echo $translator->locale("someFolder/testValues", "genderCounterExample", [
-    "_gender"  => "male",
-    "_counter" => 5
+// Translation file:
+// "purchase" => [
+//     1 => "Thank you {name} for buying a piece of {product}",
+//     2 => "Thank you {name} for buying two pieces of {product}",
+//     5 => "Thank you {name} for buying {count} pieces of {product}"
+// ]
+
+// Code:
+echo $translator->locale("shop/checkout", "purchase", [
+    "_counter" => 50,
+    "count" => 50,      // This is used as a parameter in the string
+    "name" => "John",
+    "product" => "Premium Widget"
 ]);
-// outputs: "He has many items"
+// Output: "Thank you John for buying 50 pieces of Premium Widget"
 ```
+
+**Note:** The `_counter` parameter is only used to determine which string to return, not as a variable inside the string. Add another parameter (like `count` in this example) to use the number within the text.
 
 ## Using with PHP 8.1+ Enums
 
-For PHP 8.1+, you can use the provided `Gender` enum for type-safe gender-based translations:
+For type-safe gender-based translations, use the provided `Gender` enum:
 
 ```php
 use wUFr\Gender;
 
 // Using enum for gender parameter
-echo $translator->locale("someFolder/testValues", "genderExample", [
+echo $translator->locale("users/profile", "biography", [
     "_gender" => Gender::Male->value
 ]);
-// outputs: "He received a gift"
+// Output: "He is a developer"
 
-// For objects, animals, and non-gendered things
-echo $translator->locale("someFolder/testValues", "objectDescription", [
+// For objects, animals, and non-gendered entities
+echo $translator->locale("products/description", "details", [
     "_gender" => Gender::Entity->value
 ]);
-// outputs: "It is an object"
+// Output: "It is a high-quality product"
+```
 
-// You can also use enum methods for more complex logic
+### Helpful Enum Methods
+
+The `Gender` enum provides utility methods for working with pronouns:
+
+```php
 $gender = Gender::Female;
-echo "The pronoun is: " . $gender->getPronoun();     // outputs: "The pronoun is: she"
-echo "Possessive form: " . $gender->getPossessivePronoun(); // outputs: "Possessive form: her"
+
+echo $gender->getPronoun();           // "she"
+echo $gender->getPossessivePronoun(); // "her"
+echo $gender->getObjectPronoun();     // "her"
+echo $gender->getDescription();       // "Female"
 
 // Available gender options:
 // - Gender::Male    - For male subjects (he/his/him)
-// - Gender::Female  - For female subjects (she/her/her)
+// - Gender::Female  - For female subjects (she/her/her) 
 // - Gender::Neutral - For gender-neutral people (they/their/them)
 // - Gender::Entity  - For objects, animals, babies, etc. (it/its/it)
+```
+
+## Error Handling
+
+The library provides clear error messages when translations are missing:
+
+```php
+// If the file doesn't exist
+echo $translator->locale("nonexistent", "key");
+// Output: '<b style="color:red">lang file NOT found: nonexistent</b>'
+
+// If the key doesn't exist in the file
+echo $translator->locale("common/general", "nonexistentKey");
+// Output: '<b style="color:red">lang key NOT found: common/general-nonexistentKey</b>'
+
+// If using array translation without counter or gender
+echo $translator->locale("common/general", "arrayKey");
+// Output: '<b style="color:red">lang counter or gender NOT set</b>'
+
+// If the specified gender doesn't exist in the translation
+echo $translator->locale("users/profile", "welcome", ["_gender" => "nonexistent"]);
+// Output: '<b style="color:red">lang gender NOT found: nonexistent</b>'
+```
+
+## API Reference
+
+### Translator Class
+
+```php
+// Constructor
+public function __construct(string $dir = "/locales/", string $lang = "en_US")
+
+// Directory and language setters/getters
+public function setDirectory(string $dir): self
+public function setLanguage(string $lang): self
+public function getDirectory(): string
+public function getLanguage(): string
+
+// Main translation method
+public function locale(string $file, string $key, array $params = []): string
+```
+
+### Gender Enum
+
+```php
+enum Gender: string
+{
+    case Male = 'male';
+    case Female = 'female';
+    case Neutral = 'neutral';
+    case Entity = 'entity';
+    
+    public function getDescription(): string
+    public function getPronoun(): string
+    public function getPossessivePronoun(): string
+    public function getObjectPronoun(): string
+}
 ```
 
 ## Contributing
