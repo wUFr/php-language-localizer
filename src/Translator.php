@@ -4,7 +4,7 @@ namespace wUFr;
 
 class Translator {
 	/** @var array<string,array<string,mixed>> */
-	public readonly array $values;
+	public array $values;
 
 	private string $dir;
 	private string $lang;
