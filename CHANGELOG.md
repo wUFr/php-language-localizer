@@ -1,3 +1,14 @@
+## [1.7.0](https://github.com/wUFr/php-language-localizer/compare/v1.6.0...v1.7.0) (2025-06-01)
+
+
+### Features
+
+* **modernization:** implemented PHP 8.x features ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **enums:** added Gender enum for type-safe gender-based translations ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **entities:** added Entity gender option for objects, animals, and babies ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **refactor:** improved code structure with match expressions and readonly properties ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+* **organization:** consolidated gender test files for better maintainability ([commit-hash](https://github.com/wUFr/php-language-localizer/commit/commit-hash))
+
 ## [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-01)
 
 

@@ -9,6 +9,7 @@ Text strings are stored in PHP files and these can be stored in subfolders for b
 - Handle different translations based on a counter value.
 - Gender-based translations for proper grammatical forms.
 - Combined gender and counter-based translations for complex language rules.
+- Type-safe implementation with PHP 8.x features.
 - Easy to structure localization texts in a clean folder hierarchy.
 
 ## Table of Contents
@@ -200,6 +201,45 @@ echo $translator->locale("someFolder/testValues", "genderCounterExample", [
     "_counter" => 5
 ]);
 // outputs: "She has many items"
+```
+
+```php
+echo $translator->locale("someFolder/testValues", "genderCounterExample", [
+    "_gender"  => "male",
+    "_counter" => 5
+]);
+// outputs: "He has many items"
+```
+
+## Using with PHP 8.1+ Enums
+
+For PHP 8.1+, you can use the provided `Gender` enum for type-safe gender-based translations:
+
+```php
+use wUFr\Gender;
+
+// Using enum for gender parameter
+echo $translator->locale("someFolder/testValues", "genderExample", [
+    "_gender" => Gender::Male->value
+]);
+// outputs: "He received a gift"
+
+// For objects, animals, and non-gendered things
+echo $translator->locale("someFolder/testValues", "objectDescription", [
+    "_gender" => Gender::Entity->value
+]);
+// outputs: "It is an object"
+
+// You can also use enum methods for more complex logic
+$gender = Gender::Female;
+echo "The pronoun is: " . $gender->getPronoun();     // outputs: "The pronoun is: she"
+echo "Possessive form: " . $gender->getPossessivePronoun(); // outputs: "Possessive form: her"
+
+// Available gender options:
+// - Gender::Male    - For male subjects (he/his/him)
+// - Gender::Female  - For female subjects (she/her/her)
+// - Gender::Neutral - For gender-neutral people (they/their/them)
+// - Gender::Entity  - For objects, animals, babies, etc. (it/its/it)
 ```
 
 ## Contributing
