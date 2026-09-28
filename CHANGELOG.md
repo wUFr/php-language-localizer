@@ -1,3 +1,36 @@
+# [2.0.0](https://github.com/wUFr/php-language-localizer/compare/v1.6.0...v2.0.0) (2026-09-28)
+
+
+* feat!: safe defaults, CLDR plurals, fallbacks and locale formatting ([ba1a3b0](https://github.com/wUFr/php-language-localizer/commit/ba1a3b07b8ce3d49b53feeb216a23a1547a070d7))
+
+
+### BREAKING CHANGES
+
+* parameter values are HTML-escaped by default (wrap
+trusted markup in `wUFr\Localizer\Raw` or list it in `_raw`); missing
+translations return the escaped `file.key` identifier instead of red
+HTML; PHP 8.1 is required; the public `$values` property was removed;
+file and language names are validated; threshold plurals ignore key
+order and use the lowest variant below the first threshold; the default
+directory is `locales/` instead of `/locales/`. See UPGRADE.md.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01ShSPue7LLQUwL46wi2BKxo
+
+# [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-02)
+
+
+### Bug Fixes
+
+* **tests:** remove redundant bootstrap tag from phpunit.xml ([b2ba3ad](https://github.com/wUFr/php-language-localizer/commit/b2ba3addb90ea069d4b5bfab2893759cf09a41b9))
+* **translator:** change values property from readonly to mutable ([f1ef889](https://github.com/wUFr/php-language-localizer/commit/f1ef889927bcd4b575c160d60fc1d5e2a4195df6))
+
+
+### Features
+
+* **translator:** add gender-based and combined gender-counter translation support ([98bd8e3](https://github.com/wUFr/php-language-localizer/commit/98bd8e3a0e50d485da036577af7ae189c90692c8))
+* **translator:** enhance gender-based translation support with Entity type and PHP 8.x features ([25f0eb3](https://github.com/wUFr/php-language-localizer/commit/25f0eb35d45e326657a259dbab4d226323c81a8b))
+
 ## [1.7.1](https://github.com/wUFr/php-language-localizer/compare/v1.7.0...v1.7.1) (2025-06-02)
 
 
