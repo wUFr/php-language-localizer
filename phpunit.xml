@@ -1,9 +1,24 @@
-<phpunit bootstrap="vendor/autoload.php">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+		 cacheDirectory=".phpunit.cache"
+		 colors="true"
+		 failOnWarning="true"
+		 failOnRisky="true"
+		 failOnDeprecation="true"
+		 failOnNotice="true">
 	<testsuites>
 		<testsuite name="Unit Tests">
 			<directory>./tests</directory>
+			<exclude>./tests/locales</exclude>
+			<exclude>./tests/locales-overlay</exclude>
+			<exclude>./tests/outside</exclude>
 		</testsuite>
 	</testsuites>
+	<source>
+		<include>
+			<directory>./src</directory>
+		</include>
+	</source>
 	<php>
 		<ini name="error_reporting" value="-1"/>
 	</php>
