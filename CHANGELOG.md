@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/wUFr/php-language-localizer/compare/v1.6.0...v2.0.0) (2026-09-28)
+
+
+* feat!: safe defaults, CLDR plurals, fallbacks and locale formatting ([ba1a3b0](https://github.com/wUFr/php-language-localizer/commit/ba1a3b07b8ce3d49b53feeb216a23a1547a070d7))
+
+
+### BREAKING CHANGES
+
+* parameter values are HTML-escaped by default (wrap
+trusted markup in `wUFr\Localizer\Raw` or list it in `_raw`); missing
+translations return the escaped `file.key` identifier instead of red
+HTML; PHP 8.1 is required; the public `$values` property was removed;
+file and language names are validated; threshold plurals ignore key
+order and use the lowest variant below the first threshold; the default
+directory is `locales/` instead of `/locales/`. See UPGRADE.md.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01ShSPue7LLQUwL46wi2BKxo
+
 # [1.6.0](https://github.com/wUFr/php-language-localizer/compare/v1.5.2...v1.6.0) (2025-06-02)
 
 
