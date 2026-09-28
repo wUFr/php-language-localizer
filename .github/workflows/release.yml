@@ -1,35 +1,104 @@
-name: PHP Composer CI/CD
+name: Test and Publish
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - release
+      - release-candidate
   pull_request:
-    branches: [ master ]
+    branches:
+      - release
+      - release-candidate
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 jobs:
-  publish:
+  tests:
+    name: Tests (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4', '8.5']
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v5
+      with:
+        persist-credentials: false
+
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: ${{ matrix.php }}
+        extensions: intl
+        coverage: none
+        tools: composer:v2
+
     - name: Install dependencies
-      run: composer install
+      run: composer update --no-interaction --no-progress --prefer-dist
+
     - name: Run tests
-      run: composer test
-    - name: Configure Git
-      run: |
-        git config --global user.email "wUFr@users.noreply.github.com"
-        git config --global user.name "Jiří Bělský"
-    - name: Publish package
+      run: vendor/bin/phpunit --configuration phpunit.xml
+
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      with:
+        persist-credentials: false
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: intl
+        coverage: none
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer update --no-interaction --no-progress --prefer-dist
+
+    - name: Run PHPStan
+      run: vendor/bin/phpstan analyse --no-progress
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [tests, static-analysis]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+    permissions:
+      contents: write        # tag, GitHub release, CHANGELOG commit
+      issues: write          # release comments on referenced issues
+      pull-requests: write   # release comments on referenced pull requests
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v5
+      with:
+        node-version: '24'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
-      run: composer publish
+      run: npx semantic-release
+
+    - name: Update Packagist
+      env:
+        PACKAGIST_API_TOKEN: ${{ secrets.PACKAGIST_API_TOKEN }}
+      run: |
+        curl --fail-with-body -sS -X POST \
+          -H 'Content-Type: application/json' \
+          -H "Authorization: Bearer wUFr:${PACKAGIST_API_TOKEN}" \
+          'https://packagist.org/api/update-package' \
+          -d '{"repository":"https://github.com/wUFr/php-language-localizer"}'
