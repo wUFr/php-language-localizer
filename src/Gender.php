@@ -3,7 +3,11 @@
 namespace wUFr;
 
 /**
- * Represents the possible gender values for translations
+ * Represents the possible gender values for translations.
+ *
+ * Pass a case directly as `_gender`; its value selects the variant:
+ *
+ *     $translator->locale('users/profile', 'bio', ['_gender' => Gender::Female]);
  */
 enum Gender: string
 {
@@ -27,6 +31,9 @@ enum Gender: string
 
 	/**
 	 * Get the appropriate pronoun for this gender
+	 *
+	 * @deprecated Returns English only. Put pronouns into your locale files as
+	 *             gender variants instead; this method will be removed in 3.0.
 	 */
 	public function getPronoun(): string
 	{
@@ -40,6 +47,9 @@ enum Gender: string
 
 	/**
 	 * Get the appropriate possessive pronoun for this gender
+	 *
+	 * @deprecated Returns English only. Put pronouns into your locale files as
+	 *             gender variants instead; this method will be removed in 3.0.
 	 */
 	public function getPossessivePronoun(): string
 	{
@@ -53,6 +63,9 @@ enum Gender: string
 
 	/**
 	 * Get the appropriate object pronoun for this gender
+	 *
+	 * @deprecated Returns English only. Put pronouns into your locale files as
+	 *             gender variants instead; this method will be removed in 3.0.
 	 */
 	public function getObjectPronoun(): string
 	{
